@@ -4,4 +4,4 @@
 
 ## Analysis Scripts (R)
 - [Data Preprocessing](https://github.com/ellenmartin11/prenatal-cocaine-exposure-and-dating-violence/blob/main/Data%20Preprocessing.R)
-- [Assumptions of Path Analysis]
+- [Preliminary Analyses](https://github.com/ellenmartin11/prenatal-cocaine-exposure-and-dating-violence/blob/main/Preliminary%20Analyses.md)
