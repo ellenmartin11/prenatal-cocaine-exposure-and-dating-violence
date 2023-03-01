@@ -6,17 +6,24 @@
 
 ```r
 #scatterplot matrix to visualise linearity
-scatterplotMatrix(~DatingViolenceTotal + adultBRIEFave + BRIEFave, data = averages_master_comp,
+scatterplotMatrix(~scale_DatingViolenceTotal + scale_combinedBRIEF + scale_ctqtotal, data = averages_master_clean,
                   diagonal = FALSE,             # Remove kernel density estimates
                   regLine = list(col = "green", # Linear regression line color
                                  lwd = 3),      # Linear regression line width
                   smooth = list(col.smooth = "red",   # Non-parametric mean color
-                                col.spread = "blue"))
+                                col.spread = "blue")) # Non-parametric variance color
 
 ```
 
 
-![image](https://user-images.githubusercontent.com/68326791/213329868-e05e7d77-0478-49bb-a474-e46c96f9ae96.png)
+![image](https://user-images.githubusercontent.com/68326791/222256676-04384450-4dd1-4f22-a288-e4ac884ea317.png)
+
+## Multivariate Normality
+
+```r
+###HERE INSERT THE MVN SCRIPT###
+
+```
 
 
 ## Correlations 
