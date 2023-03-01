@@ -184,3 +184,11 @@ master_data_6$mrace <- factor(master_data_6$mrace, labels = c("AfricanAmerican",
 master_data_6$max_SubstanceUseAny <- factor(master_data_6$max_SubstanceUseAny, labels = c("noSU","SU"))
 
 
+### z-scaling variables ###
+#scaling variables (z-transforms so that they are on the same scale)
+master_data_6 = cbind(master_data_6, scale_DatingViolenceTotal = scale(master$DatingViolenceTotal))
+master_data_6 = cbind(master_data_6, scale_combinedBRIEF = scale(master$adultBRIEFave))
+master_data_6 = cbind(master_data_6, scale_ctqtotal = scale(master$ctqtotal))
+master_data_6 = cbind(master_data_6, scale_birthweight = scale(master$birthweight))
+
+
