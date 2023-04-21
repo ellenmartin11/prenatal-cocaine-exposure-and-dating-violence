@@ -69,27 +69,29 @@ qqline(master_data_6$ctqtotal, col = "steelblue", lwd = 2) #mostly normal
 
 ```r
 
-library(Hmisc)
-library(corrplot)
+#saving only variables of interest
+master_data_6_cl <- averages_master_dummy[c(3,9,10,11,c(13:24))]
+master_data_7 <- master_data_6_cl[c(c(1:11),13,15)]
 
-## reading in cleaned data 
-master_data_6_cl <- master_data_6[c(3,9,10,11,c(13:24))]
+#renaming variable names
+colnames(master_data_7)[1] = "childhood maltreatment"
+colnames(master_data_7)[2] = "young adult IPV"
+colnames(master_data_7)[3] = "late adolescent EF"
+colnames(master_data_7)[5] = "prenatal cocaine exposure"
+colnames(master_data_7)[6] = "no prenatal exposure"
+colnames(master_data_7)[7] = "exposure to non-cocaine substance"
+colnames(master_data_7)[8] = "African American (mother)"
+colnames(master_data_7)[9] = "Caucasian (mother)"
+colnames(master_data_7)[10] = "Hispanic (mother)"
+colnames(master_data_7)[11] = "highshool education (mother)"
+colnames(master_data_7)[13] = "early adolescent substance use"
 
-#using corrplot package
-M <- as.matrix(cor(master_data_6_cl, method = "spearman"))
-corrplot(M, method = 'square', order = 'FPC', type = 'lower', diag = FALSE)
-## add significant level stars
-corrplot(M, p.mat = master_cor$P, method = 'color', diag = FALSE, type = 'upper',
-         sig.level = c(0.001, 0.01, 0.05), pch.cex = 0.9,
-         insig = 'label_sig', pch.col = 'grey20', order = 'AOE')
-
-
-#saving P values and correlation coefficients using Hmisc
-master_cor <- Hmisc::rcorr(as.matrix(master_data_6_cl), type = "spearman")
-data.frame(master_cor$r) %>% kable()
+#creates a correlation matrix using the Hmisc package - specifies spearman correlation, but pearson can be specified
+master_cor <- Hmisc::rcorr(as.matrix(master_data_7), type = "spearman")
+data.frame(master_cor$r) %>% kable() 
 data.frame(master_cor$P) %>% kable()
 
-
+#function that computes all your info
 cors <- function(df) { 
   # turn all three matrices (r, n, and P into a data frame)
   M <- Hmisc::rcorr(as.matrix(df), type = "spearman")
@@ -106,17 +108,32 @@ formatted_cors <- function(df){
     mutate(sig_p = ifelse(P < .05, T, F), p_if_sig = ifelse(P <.05, P, NA), r_if_sig = ifelse(P <.05, r, NA)) 
 }
 
-formatted_cors(master_data_6_cl) %>% head() %>% kable()
+#output is a nicely formatted correlation table
+formatted_cors(master_data_7) %>% head() %>% kable()
 
-
-#exporting corrmat
+#exporting corrmat (exports P values in a csv and correlation coefficients in another csv)
 write.csv(master_cor$P, file = "C:\\Users\\Ellen Martin\\OneDrive\\Desktop\\Yale Stover Lab\\Thesis\\data\\cleaned data\\corrP.csv")
 write.csv(master_cor$r,  file = "C:\\Users\\Ellen Martin\\OneDrive\\Desktop\\Yale Stover Lab\\Thesis\\data\\cleaned data\\corrR.csv")
+
+#VISUALISATION
+#using corrplot package - simple heatmap 
+#method is color, but can be changed to circle/square - only upper triangle is shown
+#FPC clusters it based on which factors seem to co-occur (e.g., Caucasian seems to clsuter alongside higher birthweigt, no prenatal exposure, highschool education)
+M <- as.matrix(cor(master_data_7, method = "spearman"))
+corrplot(M, method = 'color', order = 'FPC', type = 'upper', diag = FALSE)
+
+#national parks palette! (relies on installing the nat parks palette)
+pal <- natparks.pals("Acadia", 20, type = "continuous")
+
+## add significant level stars and an interesting color palette
+corrplot(M, p.mat = master_cor$P, method = 'color', diag = FALSE, type = 'upper',
+         sig.level = c(0.001, 0.01, 0.05), pch.cex = 0.9,
+         insig = 'label_sig', pch.col = 'grey20', order = 'FPC', col = pal)
 
 ```
 ### Correlation Heatmap
 
-![image](https://user-images.githubusercontent.com/68326791/222260288-e3412352-9d67-446d-a6c3-2c3b31b34946.png)
+![image](https://user-images.githubusercontent.com/68326791/233662855-47282b91-f8b8-42af-b4b6-4067b41ecc51.png)
 
 ### Correlation Coefficients (Spearman)
 
