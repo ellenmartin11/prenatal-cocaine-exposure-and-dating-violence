@@ -65,6 +65,41 @@ qqline(master_data_6$ctqtotal, col = "steelblue", lwd = 2) #mostly normal
 ![image](https://user-images.githubusercontent.com/68326791/222259342-70d7504b-9380-414d-b1ff-7e01967aff49.png)
 
 
+## Internal Consistency Reliability for BRIEF adult version
+
+```r
+install.packages("ltm")
+library(ltm) #this is the package for cronbach
+
+#getting only the data related to our subset
+cleanID <- read_csv("C:\\Users\\Ellen Martin\\OneDrive\\Desktop\\Yale Stover Lab\\Thesis\\data\\cleaned data\\averages_master_clean_April.csv")
+
+#filtering by ID
+subset_BRIEF <- subset(adult_BRIEF, id %in% cleanID$id)
+
+#including only BRIEF items (75)
+subset_BRIEF <- as.data.frame(subset_BRIEF[, -(c(1,2,78,79))])
+
+#cronbach's alpha
+cronbach.alpha(subset_BRIEF, CI = TRUE, 
+               probs = c(0.025, 0.975), na.rm = TRUE)
+
+```
+
+Items: 75
+
+Sample units: 707
+
+alpha: 0.969
+
+
+Bootstrap 95% CI based on 1000 samples
+
+2.5%: 0.965  
+
+97.5%: 0.972
+
+
 ## Correlations 
 
 ```r
